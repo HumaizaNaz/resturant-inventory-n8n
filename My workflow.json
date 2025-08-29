@@ -1,0 +1,394 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "36124b2f-5512-4c1f-a278-0e3431723cb8",
+      "name": "When chat message received",
+      "webhookId": "c3af5f44-7117-4ec1-b46c-98ddd799d23d"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ded37c30-824d-4d65-b517-c5fea09d640b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "b3489daa-7832-437f-ab05-85aabecf4675",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Y0nHWK2tjXMdvVq7",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        176
+      ],
+      "id": "3209d6eb-3e75-47d5-8e3a-d17fd7e531f0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appt1ivtgp4amARt6",
+          "mode": "list",
+          "cachedResultName": "Restaurant Inventory",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBKKUtds3fhZHgC",
+          "mode": "list",
+          "cachedResultName": "Inventory Items",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6/tblBKKUtds3fhZHgC"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        224,
+        192
+      ],
+      "id": "5159cac3-6375-4b95-afdc-152e1c36f0ed",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uxfV09z3mN15UWaY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appt1ivtgp4amARt6",
+          "mode": "list",
+          "cachedResultName": "Restaurant Inventory",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBKKUtds3fhZHgC",
+          "mode": "list",
+          "cachedResultName": "Inventory Items",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6/tblBKKUtds3fhZHgC"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        560,
+        144
+      ],
+      "id": "8806fbe0-8dd0-4c75-b17c-6ef39d551c3f",
+      "name": "Search records in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uxfV09z3mN15UWaY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appt1ivtgp4amARt6",
+          "mode": "list",
+          "cachedResultName": "Restaurant Inventory",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblBKKUtds3fhZHgC",
+          "mode": "list",
+          "cachedResultName": "Inventory Items",
+          "cachedResultUrl": "https://airtable.com/appt1ivtgp4amARt6/tblBKKUtds3fhZHgC"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $fromAI(\"RecordID\",\"find the exact ID of the item from airtable, may some time update it if required\") }}",
+            "Quantity in Stock": "={{ $fromAI(\"NewStock\",\"update the new stock of item in  airtable\") }}",
+            "Reorder Threshold": "={{ $fromAI(\"Newdata\",\"update the new stock of item in  airtable\") }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Item Name",
+              "displayName": "Item Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Ingredient",
+                  "value": "Ingredient"
+                },
+                {
+                  "name": "Supply",
+                  "value": "Supply"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Quantity in Stock",
+              "displayName": "Quantity in Stock",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Unit of Measure",
+              "displayName": "Unit of Measure",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "kg",
+                  "value": "kg"
+                },
+                {
+                  "name": "g",
+                  "value": "g"
+                },
+                {
+                  "name": "lb",
+                  "value": "lb"
+                },
+                {
+                  "name": "oz",
+                  "value": "oz"
+                },
+                {
+                  "name": "L",
+                  "value": "L"
+                },
+                {
+                  "name": "ml",
+                  "value": "ml"
+                },
+                {
+                  "name": "pcs",
+                  "value": "pcs"
+                },
+                {
+                  "name": "packs",
+                  "value": "packs"
+                },
+                {
+                  "name": "cases",
+                  "value": "cases"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Reorder Threshold",
+              "displayName": "Reorder Threshold",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Photo",
+              "displayName": "Photo",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Inventory Logs",
+              "displayName": "Inventory Logs",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Total Quantity Used (All Time)",
+              "displayName": "Total Quantity Used (All Time)",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        432,
+        192
+      ],
+      "id": "5978b60e-f455-4002-87c1-88f6cf1bf9de",
+      "name": "Update record in Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "uxfV09z3mN15UWaY",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record in Airtable": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "90e3273b-2643-40b0-9402-2c059405d6bb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c6ce6fd70938d5cb5cbac987b54969fa814f2edd74bf8f5dabaf4588188066f4"
+  },
+  "id": "nv1gX20tHrei4PsS",
+  "tags": []
+}
